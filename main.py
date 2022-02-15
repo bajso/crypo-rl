@@ -1,3 +1,4 @@
+import run_reinforcement
 from preprocess import Preprocess
 
 
@@ -15,3 +16,5 @@ def fetch_and_process() -> None:
 
 if __name__ == '__main__':
     fetch_and_process()
+
+    run_reinforcement.run_rfl()
