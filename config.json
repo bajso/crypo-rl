@@ -1,0 +1,42 @@
+{
+  "binance": {
+    "symbols": [
+      "BTCUSDT"
+    ],
+    "intervals": [
+      "1h"
+    ],
+    "end_time": "01.02.2022 00:00:00"
+  },
+  "data": {
+    "chart": "BTCUSDT_1h",
+    "train_set_size": 0.8,
+    "x_window_size": 10,
+    "y_window_size": 1,
+    "input_scaling": "minmax",
+    "raw_data_dir": "datasets",
+    "processed_data_dir": "processed"
+  },
+  "model": {
+    "batch_size": 128,
+    "epochs": 50,
+    "neurons": 32,
+    "activation_function": "tanh",
+    "loss_function": "mse",
+    "optimizer": "adam",
+    "dropout": 0.25,
+    "models_dir": "models"
+  },
+  "reinforcement": {
+    "window_size": 10,
+    "action_size": 3,
+    "gamma": 0.95,
+    "epsilon": 1.0,
+    "epsilon_min": 0.01,
+    "epsilon_decay": 0.001,
+    "batch_size": 32,
+    "episodes": 10000,
+    "memory_size": 10000,
+    "option": "dqn"
+  }
+}
