@@ -1,3 +1,4 @@
+import evaluate
 import run_reinforcement
 from plot import Plot
 from preprocess import Preprocess
@@ -23,7 +24,6 @@ def plot() -> None:
 
 if __name__ == '__main__':
     fetch_and_process()
-
     run_reinforcement.run_rfl()
-
+    evaluate.evaluate()
     plot()

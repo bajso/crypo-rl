@@ -5,8 +5,6 @@ from model import Model
 from preprocess import Preprocess
 from utils import load_configs
 
-_PRETRAINED_MODEL = ''
-
 
 def run_rfl() -> None:
     configs = load_configs()
@@ -23,19 +21,11 @@ def run_rfl() -> None:
     train_set, _ = p.split_train_test(df, train_set_size=train_set_size)
 
     print('\nGenerating inputs ...')
-    inputs, closing_prices, _ = p.create_inputs_reinforcement(train_set, x_win_size=window_size)
+    inputs, closing_prices = p.create_inputs_reinforcement(train_set, x_win_size=window_size)
 
     agent = DQNAgent(np.shape(inputs), option)
-
-    # load trained model if exists
-    network = model.load_network(_PRETRAINED_MODEL)
-    if network is not False:
-        agent.model = network
-
     # update weights of target network with dqn network weights
     agent.update_target_model()
-
-    evaluation = False  # switch on for testing
 
     rewards = []
     losses = []
@@ -64,7 +54,7 @@ def run_rfl() -> None:
                 np.exp(-agent.epsilon_decay * decay_step)
 
             # compute action based on current state
-            action = agent.compute_action(state, evaluation, explore_p)
+            action = agent.compute_action(state, evaluation=False, explore_p=explore_p)
 
             # calculate reward
             reward, balance, long, short = agent.calculate_reward(action, closing_prices[t], long, short, balance)
@@ -74,7 +64,7 @@ def run_rfl() -> None:
 
             if done:
                 rewards.append(total_reward)
-                losses.append(agent.history.history)
+                losses.append(agent.history)
 
                 agent.update_target_model()
 

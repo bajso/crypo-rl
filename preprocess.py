@@ -275,7 +275,7 @@ class Preprocess:
         print('Shape X:', np.shape(x_inputs), 'Shape Y:', np.shape(y_inputs))
         return x_inputs, y_inputs, close_bases
 
-    def create_inputs_reinforcement(self, data: pd.DataFrame, x_win_size: int = 10) -> np.ndarray | np.ndarray | MinMaxScaler:
+    def create_inputs_reinforcement(self, data: pd.DataFrame, x_win_size: int = 10) -> np.ndarray | np.ndarray:
         # can store 2x in memory compared to float64
         tmp_data = data.astype('float32')
 
@@ -286,7 +286,7 @@ class Preprocess:
         # RSI is oscillator [0, 100] --> [0,1]
         tmp_data[['RSI']] = tmp_data[['RSI']] / 100
 
-        scaler = self.scale_minmax(tmp_data)
+        self.scale_minmax(tmp_data)
 
         # replace all 0, otherwise can cause division with 0
         tmp_data['Close'].replace(0, method='bfill', inplace=True)
@@ -311,7 +311,7 @@ class Preprocess:
         closing_prices = np.array(closing_prices)
 
         print('Shape Inputs:', np.shape(inputs))
-        return inputs, closing_prices, scaler
+        return inputs, closing_prices
 
     def split_train_test(self, df: pd.DataFrame, train_set_size: int = 0.8) -> pd.DataFrame | pd.DataFrame:
         train_set = df[:int(train_set_size * len(df))]
