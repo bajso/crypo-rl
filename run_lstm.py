@@ -5,7 +5,7 @@ import numpy as np
 import pandas as pd
 from sklearn.metrics import mean_squared_error
 
-import plot
+from plot import Plot
 from model import Model
 from preprocess import Preprocess
 from utils import load_configs
@@ -67,6 +67,7 @@ def build_and_run_lstm() -> None:
     # save the model to a file
     lstm.save_network(lstm_model, model_name)
     # plot model loss
+    plot = Plot()
     plot.plot_loss(history, label)
 
     # predict
@@ -95,7 +96,8 @@ def one_step_prediction(X_test: np.ndarray,
     predicted_df['Target'] = pd.DataFrame(Y_test)
 
     # plot prediction results
-    plot.plot_prediction(predicted_df, label)
+    plot = Plot()
+    plot.plot_predictions(predicted_df, label)
 
     return predictions
 
